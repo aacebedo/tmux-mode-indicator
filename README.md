@@ -2,16 +2,16 @@
 
 Plugin that displays prompt indicating currently active Tmux mode.
 
-**Prefix Prompt**:  
+**Prefix Prompt**:
 ![Prefix Prompt](screenshots/prefix.png)
 
-**Copy Prompt**:  
+**Copy Prompt**:
 ![Copy Prompt](screenshots/copy.png)
 
-**Sync Prompt**:  
+**Sync Prompt**:
 ![Sync Prompt](screenshots/sync.png)
 
-**Empty Prompt**:  
+**Empty Prompt**:
 ![Empty Prompt](screenshots/empty.png)
 
 _Note: This is a trimmed down version of the original [tmux-prefix-highlight](https://github.com/tmux-plugins/tmux-prefix-highlight) plugin._
@@ -73,6 +73,12 @@ set -g @mode_indicator_sync_prompt ' SYNC '
 # prompt to display when tmux is in normal mode
 set -g @mode_indicator_empty_prompt ' TMUX '
 
+# add an element at the start of the indicator in <mode> mode (replace it with prefix, copy, sync or empty)
+set -g @mode_indicator_<mode>_start_prompt ''
+
+# add an element at the start of the indicator in <mode> mode (replace it with prefix, copy, sync or empty)
+set -g @mode_indicator_<mode>_end_prompt ''
+
 # style values for prefix prompt
 set -g @mode_indicator_prefix_mode_style 'bg=blue,fg=black'
 
@@ -84,6 +90,12 @@ set -g @mode_indicator_sync_mode_style 'bg=red,fg=black'
 
 # style values for empty prompt
 set -g @mode_indicator_empty_mode_style 'bg=cyan,fg=black'
+
+# style the element at the start of the indicator in <mode> mode (replace it with prefix, copy, sync or empty)
+set -g @mode_indicator_<mode>_start_style 'bg=cyan,fg=black'
+
+# stàle the element at the start of the indicator in <mode> mode (replace it with prefix, copy, sync or empty)
+set -g @mode_indicator_<mode>_end_style 'bg=cyan,fg=black'
 ```
 
 ### Custom Indicator

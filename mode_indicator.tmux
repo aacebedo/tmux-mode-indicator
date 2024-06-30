@@ -15,6 +15,30 @@ declare -r sync_mode_style_config='@mode_indicator_sync_mode_style'
 declare -r empty_mode_style_config='@mode_indicator_empty_mode_style'
 declare -r custom_mode_style_config="@mode_indicator_custom_mode_style"
 
+declare -r prefix_start_prompt_config="@mode_indicator_prefix_start_prompt"
+declare -r copy_start_prompt_config="@mode_indicator_copy_start_prompt"
+declare -r sync_start_prompt_config="@mode_indicator_sync_start_prompt"
+declare -r empty_start_prompt_config="@mode_indicator_empty_start_prompt"
+declare -r custom_start_prompt_config="@mode_indicator_custom_start_prompt"
+
+declare -r prefix_mode_start_style_config='@mode_indicator_prefix_mode_start_style'
+declare -r copy_mode_start_style_config='@mode_indicator_copy_mode_start_style'
+declare -r sync_mode_start_style_config='@mode_indicator_sync_mode_start_style'
+declare -r empty_mode_start_style_config='@mode_indicator_empty_mode_start_style'
+declare -r custom_mode_start_style_config='@mode_indicator_custom_mode_start_style'
+
+declare -r prefix_end_prompt_config="@mode_indicator_prefix_end_prompt"
+declare -r copy_end_prompt_config="@mode_indicator_copy_end_prompt"
+declare -r sync_end_prompt_config="@mode_indicator_sync_end_prompt"
+declare -r empty_end_prompt_config="@mode_indicator_empty_end_prompt"
+declare -r custom_end_prompt_config="@mode_indicator_custom_end_prompt"
+
+declare -r prefix_mode_end_style_config='@mode_indicator_prefix_mode_end_style'
+declare -r copy_mode_end_style_config='@mode_indicator_copy_mode_end_style'
+declare -r sync_mode_end_style_config='@mode_indicator_sync_mode_end_style'
+declare -r empty_mode_end_style_config='@mode_indicator_empty_mode_end_style'
+declare -r custom_mode_end_style_config='@mode_indicator_custom_mode_end_style'
+
 tmux_option() {
   local -r option=$(tmux show-option -gqv "$1")
   local -r fallback="$2"
@@ -32,20 +56,44 @@ init_tmux_mode_indicator() {
     copy_prompt=$(tmux_option "$copy_prompt_config" " COPY ") \
     sync_prompt=$(tmux_option "$sync_prompt_config" " SYNC ") \
     empty_prompt=$(tmux_option "$empty_prompt_config" " TMUX ") \
+    prefix_start_prompt=$(tmux_option "$prefix_start_prompt_config" "") \
+    copy_start_prompt=$(tmux_option "$copy_start_prompt_config" "") \
+    sync_start_prompt=$(tmux_option "$sync_start_prompt_config" "") \
+    empty_start_prompt=$(tmux_option "$empty_start_prompt_config" "") \
+    prefix_end_prompt=$(tmux_option "$prefix_end_prompt_config" "") \
+    copy_end_prompt=$(tmux_option "$copy_end_prompt_config" "") \
+    sync_end_prompt=$(tmux_option "$sync_end_prompt_config" "") \
+    empty_end_prompt=$(tmux_option "$empty_end_prompt_config" "") \
     prefix_style=$(indicator_style "$prefix_mode_style_config" "bg=blue,fg=black") \
     copy_style=$(indicator_style "$copy_mode_style_config" "bg=yellow,fg=black") \
     sync_style=$(indicator_style "$sync_mode_style_config" "bg=red,fg=black") \
-    empty_style=$(indicator_style "$empty_mode_style_config" "bg=cyan,fg=black")
+    empty_style=$(indicator_style "$empty_mode_style_config" "bg=cyan,fg=black") \
+    prefix_start_style=$(indicator_style "$prefix_mode_start_style_config" "bg=blue,fg=black") \
+    copy_start_style=$(indicator_style "$copy_mode_start_style_config" "bg=yellow,fg=black") \
+    sync_start_style=$(indicator_style "$sync_mode_start_style_config" "bg=red,fg=black") \
+    empty_start_style=$(indicator_style "$empty_mode_start_style_config" "bg=cyan,fg=black") \
+    prefix_end_style=$(indicator_style "$prefix_mode_end_style_config" "bg=blue,fg=black") \
+    copy_end_style=$(indicator_style "$copy_mode_end_style_config" "bg=yellow,fg=black") \
+    sync_end_style=$(indicator_style "$sync_mode_end_style_config" "bg=red,fg=black") \
+    empty_end_style=$(indicator_style "$empty_mode_end_style_config" "bg=cyan,fg=black")
 
   local -r \
     custom_prompt="#(tmux show-option -qv $custom_prompt_config)" \
-    custom_style="#(tmux show-option -qv $custom_mode_style_config)"
+    custom_style="#(tmux show-option -qv $custom_mode_style_config)" \
+    custom_start_prompt="#(tmux show-option -qv $custom_start_prompt_config)" \
+    custom_start_style="#(tmux show-option -qv $custom_mode_start_style_config)" \
+    custom_end_prompt="#(tmux show-option -qv $custom_end_prompt_config)" \
+    custom_end_style="#(tmux show-option -qv $custom_mode_end_style_config)"
 
   local -r \
     mode_prompt="#{?#{!=:$custom_prompt,},$custom_prompt,#{?client_prefix,$prefix_prompt,#{?pane_in_mode,$copy_prompt,#{?pane_synchronized,$sync_prompt,$empty_prompt}}}}" \
-    mode_style="#{?#{!=:$custom_style,},#[$custom_style],#{?client_prefix,$prefix_style,#{?pane_in_mode,$copy_style,#{?pane_synchronized,$sync_style,$empty_style}}}}"
+    mode_style="#{?#{!=:$custom_style,},#[$custom_style],#{?client_prefix,$prefix_style,#{?pane_in_mode,$copy_style,#{?pane_synchronized,$sync_style,$empty_style}}}}" \
+    mode_start_prompt="#{?#{!=:$custom_start_prompt,},$custom_start_prompt,#{?client_prefix,$prefix_start_prompt,#{?pane_in_mode,$copy_start_prompt,#{?pane_synchronized,$sync_start_prompt,$empty_start_prompt}}}}" \
+    mode_start_style="#{?#{!=:$custom_start_style,},#[$custom_start_style],#{?client_prefix,$prefix_start_style,#{?pane_in_mode,$copy_start_style,#{?pane_synchronized,$sync_start_style,$empty_start_style}}}}" \
+    mode_end_prompt="#{?#{!=:$custom_end_prompt,},$custom_end_prompt,#{?client_prefix,$prefix_end_prompt,#{?pane_in_mode,$copy_end_prompt,#{?pane_synchronized,$sync_end_prompt,$empty_end_prompt}}}}" \
+    mode_end_style="#{?#{!=:$custom_end_style,},#[$custom_end_style],#{?client_prefix,$prefix_end_style,#{?pane_in_mode,$copy_end_style,#{?pane_synchronized,$sync_end_style,$empty_end_style}}}}"
 
-  local -r mode_indicator="#[default]$mode_style$mode_prompt#[default]"
+  local -r mode_indicator="#[default]$mode_start_style$mode_start_prompt#[default]$mode_style$mode_prompt#[default]$mode_end_style$mode_end_prompt#[default]"
 
   local -r status_left_value="$(tmux_option "status-left")"
   tmux set-option -gq "status-left" "${status_left_value/$mode_indicator_placeholder/$mode_indicator}"
